@@ -5,7 +5,8 @@ import { handleValidationError } from "../helpers/handleValidationError";
 import handleCastError from "../helpers/handleCastError";
 import APIError from "../helpers/APIError";
 
-// global error handler
+import { ZodError } from "zod";
+import handleZodError from "../helpers/handleZodError";
 
 export const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -35,6 +36,11 @@ export const globalErrorHandler: ErrorRequestHandler = (
     message = simplifiedError?.message;
     errorMessages = simplifiedError?.errorMessages;
     stack = simplifiedError?.stack;
+  } else if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
   } else if (err?.name === "CastError") {
     const simplifiedError = handleCastError(err);
     statusCode = simplifiedError.statusCode;
