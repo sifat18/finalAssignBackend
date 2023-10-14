@@ -105,20 +105,30 @@ export const getSingleReviewService = async (
   return result;
 };
 export const deleteReviewService = async (
-  id: string
+  id: string,
+  user: JwtPayload | null
 ): Promise<IReview | null | undefined> => {
-  const result = await Review.findByIdAndDelete({
-    _id: new mongoose.Types.ObjectId(id),
-  });
-
+  let result;
+  if (user!.role === "client") {
+    result = await Review.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(id),
+      client: new mongoose.Types.ObjectId(user?._id),
+    });
+  } else {
+    result = await Review.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(id),
+    });
+  }
   return result;
 };
 export const updateReviewService = async (
   id: string,
-  payload: Partial<IReview>
+  payload: Partial<IReview>,
+  user: JwtPayload | null
 ): Promise<IReview | null> => {
   const isExist = await Review.findOne({
     _id: new mongoose.Types.ObjectId(id),
+    client: new mongoose.Types.ObjectId(user?._id),
   });
 
   if (!isExist) {

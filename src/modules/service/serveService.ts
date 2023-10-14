@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import APIError from "../../helpers/APIError";
 import { Service } from "./serviceModel";
-import { IService } from "./serviceInterface";
+import { IService, IServiceFilters } from "./serviceInterface";
+import { IPaginationOptions } from "../../interfaces/pagination";
+import { IGenericResponse } from "../../interfaces/error";
+import { calculatePagination } from "../../helpers/paginationHelper";
+import { serviceSearchableFields } from "../../helpers/pick";
 export const serviceCreate = async (
   service: IService
 ): Promise<IService | null> => {
@@ -14,9 +18,75 @@ export const serviceCreate = async (
 };
 
 // getting all
-export const getServiceAll = async (): Promise<IService[] | null> => {
-  const total = await Service.find({});
-  return total;
+export const getServiceAll = async (
+  filters: IServiceFilters,
+  paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<IService[]>> => {
+  const { searchTerm, maxPrice, minPrice, ...filtersData } = filters;
+  const { page, limit, skip, sortBy, sortOrder } =
+    calculatePagination(paginationOptions);
+
+  const andConditions = [];
+  // search
+  if (searchTerm) {
+    andConditions.push({
+      $or: serviceSearchableFields.map((field) => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: "i",
+        },
+      })),
+    });
+  }
+  // filter field
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $or: Object.entries(filtersData).map(([field, value]) => ({
+        [field]: {
+          $regex: value,
+          $options: "i",
+        },
+      })),
+    });
+  }
+  if (maxPrice) {
+    andConditions.push({
+      price: {
+        $lte: Number(maxPrice),
+      },
+    });
+  }
+
+  if (minPrice) {
+    andConditions.push({
+      price: {
+        $gte: Number(minPrice),
+      },
+    });
+  }
+  const sortConditions: { [key: string]: SortOrder } = {};
+
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+
+  const result = await Service.find(whereConditions)
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const count = await Service.countDocuments(whereConditions);
+
+  return {
+    meta: {
+      page,
+      limit,
+      count,
+    },
+    data: result,
+  };
 };
 // single
 export const singleGetService = async (

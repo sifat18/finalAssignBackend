@@ -21,12 +21,12 @@ router.post(
 );
 router.get(
   "/services",
-  auth(Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
+  auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
   getAllService
 );
 router.get(
   "/services/:id",
-  auth(Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
+  auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
   getSingleService
 );
 router.patch(

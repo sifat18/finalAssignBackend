@@ -60,7 +60,7 @@ export const deleteService = catchAsync(async (req: Request, res: Response) => {
 
   const { id } = req.params;
 
-  const result = await deleteReviewService(id);
+  const result = await deleteReviewService(id, req.user);
 
   reponseFormat<IReview>(res, {
     statusCode: 200,
@@ -72,16 +72,10 @@ export const deleteService = catchAsync(async (req: Request, res: Response) => {
 
 // update
 export const updateReview = catchAsync(async (req: Request, res: Response) => {
-  if (
-    req.user!.service !== "content-management" ||
-    req.user!.service !== "super-management"
-  )
-    throw new APIError(401, "UnAuthorized Action !");
-
   const { id } = req.params;
   const updatedData = req.body;
 
-  const result = await updateReviewService(id, updatedData);
+  const result = await updateReviewService(id, updatedData, req.user);
 
   reponseFormat<IReview>(res, {
     statusCode: 200,

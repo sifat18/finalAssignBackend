@@ -8,3 +8,9 @@ export type IService = {
   description: string;
   status: "active" | "upcoming" | "inactive";
 };
+export type IServiceFilters = {
+  searchTerm?: string;
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+};

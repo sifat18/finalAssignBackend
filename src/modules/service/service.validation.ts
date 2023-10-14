@@ -25,6 +25,6 @@ const createServiceZodSchema = z.object({
   }),
 });
 
-export const UserValidation = {
+export const ServiceValidation = {
   createServiceZodSchema,
 };

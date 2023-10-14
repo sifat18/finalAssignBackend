@@ -9,6 +9,11 @@ import { IUser } from "./userInterface";
 import catchAsync from "../../helpers/catchAsync";
 import reponseFormat from "../../helpers/responseFormat";
 import APIError from "../../helpers/APIError";
+import {
+  paginationFields,
+  pick,
+  userFilterableFields,
+} from "../../helpers/pick";
 
 // all user
 export const getAllUser: RequestHandler = catchAsync(
@@ -18,14 +23,17 @@ export const getAllUser: RequestHandler = catchAsync(
       req.user!.service !== "super-management"
     )
       throw new APIError(401, "UnAuthorized Action !");
+    const filters = pick(req.query, userFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
 
-    const result = await getAllUserService();
+    const result = await getAllUserService(filters, paginationOptions);
 
     reponseFormat<IUser[]>(res, {
       statusCode: 200,
       success: true,
       message: "Users retrieved successfully",
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );

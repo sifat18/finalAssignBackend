@@ -10,6 +10,11 @@ import catchAsync from "../../helpers/catchAsync";
 import reponseFormat from "../../helpers/responseFormat";
 import APIError from "../../helpers/APIError";
 import { IService } from "./serviceInterface";
+import {
+  paginationFields,
+  pick,
+  serviceFilterableFields,
+} from "../../helpers/pick";
 
 export const createService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -40,13 +45,17 @@ export const getAllService: RequestHandler = catchAsync(
     )
       throw new APIError(401, "UnAuthorized Action !");
 
-    const result = await getServiceAll();
+    const filters = pick(req.query, serviceFilterableFields);
+    const paginationOptions = pick(req.query, paginationFields);
+
+    const result = await getServiceAll(filters, paginationOptions);
 
     reponseFormat<IService[]>(res, {
       statusCode: 200,
       success: true,
       message: "Services retrieved successfully",
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );
