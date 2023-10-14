@@ -9,7 +9,7 @@ export const serviceSchema = new Schema<IService>(
       required: true,
       enum: ["Wash and Fold", "Dry Cleaning", "Ironing and Pressing"],
     },
-    price: { type: String, required: true },
+    price: { type: Number, required: true },
     slots: { type: Number, required: true },
     description: { type: String, required: true },
     status: {
