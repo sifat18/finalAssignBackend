@@ -29,4 +29,4 @@ router.delete(
   deleteService
 );
 
-export const UserRoutes = router;
+export const ReviewRoutes = router;
