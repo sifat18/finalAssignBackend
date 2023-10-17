@@ -1,15 +1,17 @@
 import { Request, RequestHandler, Response } from "express";
-import { IUser } from "../user/userInterface";
 import { IAdmin } from "./adminInterafce";
-import { createAdminService } from "./adminService";
+import {
+  createAdminService,
+  deleteAdminService,
+  getAllAdminService,
+  getSingleAdminService,
+  updateAdminService,
+} from "./adminService";
 import catchAsync from "../../helpers/catchAsync";
 import reponseFormat from "../../helpers/responseFormat";
 import APIError from "../../helpers/APIError";
 export const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    if (req.user!.role !== "super-admin")
-      throw new APIError(401, "UnAuthorized Action !");
-
     const { ...adminData } = req.body;
     const result = await createAdminService(adminData);
     let dataWithoutPass;
@@ -25,3 +27,58 @@ export const createAdmin: RequestHandler = catchAsync(
     });
   }
 );
+// all user
+export const getAllAdmin: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllAdminService();
+
+    reponseFormat<IAdmin[]>(res, {
+      statusCode: 200,
+      success: true,
+      message: "Admin retrieved successfully",
+      data: result,
+    });
+  }
+);
+// single user
+export const getSingleAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await getSingleAdminService(id);
+
+    reponseFormat<IAdmin>(res, {
+      statusCode: 200,
+      success: true,
+      message: "Admin retrieved successfully",
+      data: result,
+    });
+  }
+);
+// update
+export const updateAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  const result = await updateAdminService(id, updatedData);
+
+  reponseFormat<IAdmin>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Admin updated successfully",
+    data: result,
+  });
+});
+// delete
+export const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const result = await deleteAdminService(id);
+
+  reponseFormat<IAdmin>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Admin deleted successfully",
+    data: result,
+  });
+});
