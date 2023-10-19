@@ -42,7 +42,7 @@ export const loginUserService = async (
 
   //create access token & refresh token
 
-  const { _id, role, service } = isUserExist;
+  const { _id, role, service }: any = isUserExist;
   const accessToken = createToken(
     { _id, role, email, service },
     config.jwt.secret as Secret,
@@ -83,7 +83,7 @@ export const getRefreshTokenService = async (
 
   const newAccessToken = createToken(
     {
-      _id: isUserExist._id,
+      _id: (isUserExist as any)._id,
       role: isUserExist.role,
       email: isUserExist.email,
       service: isUserExist.service,

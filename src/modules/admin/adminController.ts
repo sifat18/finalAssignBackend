@@ -16,7 +16,7 @@ export const createAdmin: RequestHandler = catchAsync(
     const result = await createAdminService(adminData);
     let dataWithoutPass;
     if (result) {
-      const { password, ...rest } = result?._doc;
+      const { password, ...rest } = (result as any)?._doc;
       dataWithoutPass = rest;
     }
     reponseFormat<Omit<IAdmin, "password">>(res, {

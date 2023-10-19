@@ -18,7 +18,7 @@ export const createUser: RequestHandler = catchAsync(
     const result = await createUserService(userData);
     let dataWithoutPass;
     if (result) {
-      const { password, ...rest } = result?._doc;
+      const { password, ...rest } = (result as any)?._doc;
       dataWithoutPass = rest;
     }
     reponseFormat<Omit<IUser, "password">>(res, {
