@@ -5,6 +5,7 @@ import {
   singleReview,
   updateReview,
   deleteService,
+  getAllReviewForAll,
 } from "./reviewController";
 import auth from "../../middlewears/auth";
 import { Admin_ROLE } from "../admin/adminConstant";
@@ -17,6 +18,7 @@ router.get(
   auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
   getAllReview
 );
+router.get("/reviews-for-all", getAllReviewForAll);
 router.get(
   "/reviews/:id",
   auth(Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN, "client"),

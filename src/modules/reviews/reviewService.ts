@@ -157,3 +157,18 @@ export const updateReviewService = async (
   );
   return result;
 };
+
+// get alll
+export const getAllReviewServiceForAll = async (): Promise<
+  IReview[] | undefined
+> => {
+  const result = Review.find({})
+    .populate({
+      path: "services",
+    })
+    .populate({
+      path: "client",
+    });
+
+  return result;
+};

@@ -3,6 +3,7 @@ import {
   createReviewService,
   deleteReviewService,
   getAllReviewService,
+  getAllReviewServiceForAll,
   getSingleReviewService,
   updateReviewService,
 } from "./reviewService";
@@ -36,6 +37,19 @@ export const getAllReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+// get all
+export const getAllReviewForAll = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllReviewServiceForAll();
+
+    reponseFormat<IReview[]>(res, {
+      statusCode: 200,
+      success: true,
+      message: "Review retrieved successfully !",
+      data: result,
+    });
+  }
+);
 // get 1
 export const singleReview = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
