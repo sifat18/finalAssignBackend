@@ -41,7 +41,8 @@ export const getAllService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     if (
       req.user!.service !== "content-management" &&
-      req.user!.service !== "super-management"
+      req.user!.service !== "super-management" &&
+      req.user!.role !== "client"
     ) {
       throw new APIError(401, "UnAuthorized Action !");
     }

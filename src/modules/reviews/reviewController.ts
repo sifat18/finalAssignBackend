@@ -25,9 +25,9 @@ export const createReview: RequestHandler = catchAsync(
 );
 // get all
 export const getAllReview = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { _id }: any = req.user;
 
-  const result = await getAllReviewService(id);
+  const result = await getAllReviewService(_id);
 
   reponseFormat<IReview[]>(res, {
     statusCode: 200,
@@ -53,8 +53,9 @@ export const singleReview = catchAsync(async (req: Request, res: Response) => {
 // delete
 export const deleteService = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
-    req.user!.service !== "super-management"
+    req.user!.service !== "user-management" &&
+    req.user!.service !== "super-management" &&
+    req.user!.role !== "client"
   )
     throw new APIError(401, "UnAuthorized Action !");
 
@@ -74,7 +75,6 @@ export const deleteService = catchAsync(async (req: Request, res: Response) => {
 export const updateReview = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
-
   const result = await updateReviewService(id, updatedData, req.user);
 
   reponseFormat<IReview>(res, {

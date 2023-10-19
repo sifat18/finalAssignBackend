@@ -42,9 +42,10 @@ export const getAllReviewService = async (
   const result = Review.aggregate([
     {
       $match: {
-        services: new mongoose.Types.ObjectId(id),
+        client: new mongoose.Types.ObjectId(id),
       },
     },
+
     {
       $lookup: {
         from: "users", // Assuming the client information is in the 'users' collection
@@ -54,8 +55,20 @@ export const getAllReviewService = async (
       },
     },
     {
+      $lookup: {
+        from: "services", // Assuming the client information is in the 'users' collection
+        localField: "services",
+        foreignField: "_id",
+        as: "services",
+      },
+    },
+    {
       $unwind: "$client", // Deconstruct the 'client' array created by the lookup
     },
+    {
+      $unwind: "$services", // Deconstruct the 'client' array created by the lookup
+    },
+
     {
       $project: {
         "client.password": 0, // Exclude the password field from client information

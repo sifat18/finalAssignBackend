@@ -82,13 +82,13 @@ export const getAllOrderService = async (
   // for buyer
   else if (user?.role === "client") {
     const exists = await Order.aggregate([
-      { $match: { buyer: userIdAsObjecId } },
+      { $match: { client: userIdAsObjecId } },
       {
         $lookup: {
           from: Service.collection.name,
           localField: "services",
           foreignField: "_id",
-          as: "service",
+          as: "services",
         },
       },
       {
@@ -101,7 +101,7 @@ export const getAllOrderService = async (
       },
       {
         $addFields: {
-          service: { $arrayElemAt: ["$service", 0] },
+          services: { $arrayElemAt: ["$services", 0] },
           client: { $arrayElemAt: ["$client", 0] },
         },
       },

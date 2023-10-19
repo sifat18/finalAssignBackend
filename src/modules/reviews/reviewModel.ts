@@ -8,7 +8,6 @@ export const ReviewSchema = new Schema<IReview, ReviewModel>(
     services: { type: Schema.Types.ObjectId, ref: Service, required: true },
     client: { type: Schema.Types.ObjectId, ref: User, required: true },
     message: { type: String, required: true },
-    date: { type: String, required: true },
     rating: { type: Number, required: true },
   },
   {

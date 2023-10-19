@@ -6,7 +6,6 @@ export interface IReview {
   services: Types.ObjectId | IService;
   client: Types.ObjectId | IUser;
   message: string;
-  date: string;
   rating: number;
 }
 export type ReviewModel = Model<IReview, Record<string, unknown>>;
