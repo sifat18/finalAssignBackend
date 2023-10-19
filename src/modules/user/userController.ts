@@ -61,7 +61,8 @@ export const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 export const getProfile = catchAsync(async (req: Request, res: Response) => {
   if (
     req.user!.service !== "user-management" &&
-    req.user!.service !== "super-management"
+    req.user!.service !== "super-management" &&
+    req.user!.role !== "client"
   )
     throw new APIError(401, "UnAuthorized Action !");
 

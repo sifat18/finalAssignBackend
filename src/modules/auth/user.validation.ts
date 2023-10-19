@@ -18,8 +18,8 @@ const createUserZodSchema = z.object({
         required_error: "Email is required",
       })
       .email(),
-    phoneNumber: z.string({
-      required_error: "phone Number number is required",
+    phoneNumber: z.number({
+      required_error: "phone Number is required",
     }),
 
     role: z.string({

@@ -9,7 +9,7 @@ export type IUser = {
   role: "super-admin" | "admin" | "client";
   password: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber: Number;
   address?: string;
   service?: string;
 };

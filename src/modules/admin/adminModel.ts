@@ -35,7 +35,7 @@ export const adminSchema = new Schema<IAdmin, AdminModel>(
       enum: ["user-management", "content-management", "super-management"],
       required: true,
     },
-    phoneNumber: { type: String, required: true, unique: true },
+    phoneNumber: { type: Number, required: true, unique: true },
   },
   {
     timestamps: true,

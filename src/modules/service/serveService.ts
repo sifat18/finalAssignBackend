@@ -6,6 +6,7 @@ import { IPaginationOptions } from "../../interfaces/pagination";
 import { IGenericResponse } from "../../interfaces/error";
 import { calculatePagination } from "../../helpers/paginationHelper";
 import { serviceSearchableFields } from "../../helpers/pick";
+import { Order } from "../booking/orderModel";
 export const serviceCreate = async (
   service: IService
 ): Promise<IService | null> => {
@@ -125,6 +126,11 @@ export const serviceUpdate = async (
 };
 // delete
 export const serviceDelete = async (id: string): Promise<IService | null> => {
+  const isExist = await Order.aggregate([{ $match: { services: id } }]);
+  if (isExist?.length > 0) {
+    throw new APIError(400, "Service Cant be deleted as It is booked !");
+  }
+
   const result = await Service.findByIdAndDelete({
     _id: new mongoose.Types.ObjectId(id),
   });

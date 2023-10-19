@@ -6,7 +6,7 @@ export type IAdmin = {
   name: UserName;
   role: Admin_ROLE.ADMIN | Admin_ROLE.SUPER_ADMIN;
   password: string;
-  phoneNumber: string;
+  phoneNumber: number;
   email: string;
   service: string;
   address?: string;
