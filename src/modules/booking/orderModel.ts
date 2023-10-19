@@ -7,6 +7,11 @@ export const orderSchema = new Schema<IOrder, OrderModel>(
   {
     services: { type: Schema.Types.ObjectId, ref: Service, required: true },
     client: { type: Schema.Types.ObjectId, ref: User, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "approved"],
+      required: true,
+    },
   },
   {
     timestamps: true,

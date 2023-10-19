@@ -44,6 +44,7 @@ export const createOrderService = async (
   const orderObject = {
     services: serviceInfo?._id,
     client: userInfo?._id,
+    status: data?.status,
   };
   const newOrder = await Order.create(orderObject);
   if (!newOrder) {
@@ -163,5 +164,29 @@ export const deleteOrderService = async (
     _id: new mongoose.Types.ObjectId(id),
   });
 
+  return result;
+};
+
+export const updateOrderService = async (
+  id: string,
+  payload: Partial<IOrder>,
+  user: JwtPayload | null
+): Promise<IOrder | null> => {
+  const isExist = await Order.findOne({
+    _id: new mongoose.Types.ObjectId(id),
+    // client: new mongoose.Types.ObjectId(user?._id),
+  });
+
+  if (!isExist) {
+    throw new APIError(404, "Order not found !");
+  }
+  const updatedOrderData: Partial<IOrder> = { ...payload };
+  const result = await Order.findOneAndUpdate(
+    { _id: new mongoose.Types.ObjectId(id) },
+    updatedOrderData,
+    {
+      new: true,
+    }
+  );
   return result;
 };

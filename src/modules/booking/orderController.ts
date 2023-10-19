@@ -5,6 +5,7 @@ import {
   deleteOrderService,
   getAllOrderService,
   getSingleOrderService,
+  updateOrderService,
 } from "./orderService";
 import mongoose from "mongoose";
 import { Order } from "./orderModel";
@@ -51,7 +52,7 @@ export const singleOrder = catchAsync(async (req: Request, res: Response) => {
 // delete
 export const deleteService = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
+    req.user!.service !== "user-management" &&
     req.user!.service !== "super-management"
   )
     throw new APIError(401, "UnAuthorized Action !");
@@ -64,6 +65,20 @@ export const deleteService = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: "Order deleted successfully",
+    data: result,
+  });
+});
+// update
+export const updateOrder = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  const result = await updateOrderService(id, updatedData, req.user);
+
+  reponseFormat<IOrder>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Order updated successfully",
     data: result,
   });
 });

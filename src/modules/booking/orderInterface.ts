@@ -5,7 +5,7 @@ import { IService } from "../service/serviceInterface";
 export interface IOrder {
   services: Types.ObjectId | IService;
   client: Types.ObjectId | IUser;
-  slots?: number;
+  status: "approved" | "pending";
 }
 export type OrderModel = Model<IOrder, Record<string, unknown>>;
 

@@ -1,5 +1,11 @@
 import express from "express";
-import { createOrder, getAllOrders, singleOrder } from "./orderController";
+import {
+  createOrder,
+  deleteService,
+  getAllOrders,
+  singleOrder,
+  updateOrder,
+} from "./orderController";
 import auth from "../../middlewears/auth";
 import { Admin_ROLE } from "../admin/adminConstant";
 
@@ -19,6 +25,11 @@ router.get(
 router.delete(
   "/orders/:id",
   auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
-  singleOrder
+  deleteService
+);
+router.patch(
+  "/orders/:id",
+  auth(Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
+  updateOrder
 );
 export const orderRoutes = router;
