@@ -12,7 +12,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://main--heartfelt-fudge-0ec8f6.netlify.app/",
     credentials: true,
   })
 );
