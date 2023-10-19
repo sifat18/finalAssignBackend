@@ -50,7 +50,15 @@ export const createOrderService = async (
     throw new APIError(404, "Failed to create order");
   }
 
-  return newOrder;
+  const result = await Order.findOne({
+    _id: new mongoose.Types.ObjectId(newOrder?._id),
+  })
+    .populate({
+      path: "services",
+      // select: "-slots",
+    })
+    .populate({ path: "client", select: "-password" });
+  return result;
 };
 // get alll
 export const getAllOrderService = async (

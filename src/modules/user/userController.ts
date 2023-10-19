@@ -19,7 +19,7 @@ import {
 export const getAllUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     if (
-      req.user!.service !== "user-management" ||
+      req.user!.service !== "user-management" &&
       req.user!.service !== "super-management"
     )
       throw new APIError(401, "UnAuthorized Action !");
@@ -40,7 +40,7 @@ export const getAllUser: RequestHandler = catchAsync(
 // single user
 export const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
+    req.user!.service !== "user-management" &&
     req.user!.service !== "super-management"
   )
     throw new APIError(401, "UnAuthorized Action !");
@@ -60,7 +60,7 @@ export const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 // single user profile
 export const getProfile = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
+    req.user!.service !== "user-management" &&
     req.user!.service !== "super-management"
   )
     throw new APIError(401, "UnAuthorized Action !");
@@ -93,7 +93,7 @@ export const updateUserProfile = catchAsync(
 // update
 export const updateUser = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
+    req.user!.service !== "user-management" &&
     req.user!.service !== "super-management"
   )
     throw new APIError(401, "UnAuthorized Action !");
@@ -113,7 +113,7 @@ export const updateUser = catchAsync(async (req: Request, res: Response) => {
 // delete
 export const deleteUser = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "user-management" ||
+    req.user!.service !== "user-management" &&
     req.user!.service !== "super-management"
   )
     throw new APIError(401, "UnAuthorized Action !");

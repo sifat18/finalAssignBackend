@@ -19,11 +19,11 @@ import {
 export const createService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     if (
-      req.user!.service !== "super-management" ||
-      req.user!.service !== "content-management"
-    )
+      req.user!.service !== "content-management" &&
+      req.user!.service !== "super-management"
+    ) {
       throw new APIError(401, "UnAuthorized Action !");
-
+    }
     const { ...serviceData } = req.body;
     const result = await serviceCreate(serviceData);
 
@@ -40,10 +40,11 @@ export const createService: RequestHandler = catchAsync(
 export const getAllService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     if (
-      req.user!.service !== "content-management" ||
+      req.user!.service !== "content-management" &&
       req.user!.service !== "super-management"
-    )
+    ) {
       throw new APIError(401, "UnAuthorized Action !");
+    }
 
     const filters = pick(req.query, serviceFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
@@ -63,11 +64,11 @@ export const getAllService: RequestHandler = catchAsync(
 export const getSingleService = catchAsync(
   async (req: Request, res: Response) => {
     if (
-      req.user!.service !== "content-management" ||
+      req.user!.service !== "content-management" &&
       req.user!.service !== "super-management"
-    )
+    ) {
       throw new APIError(401, "UnAuthorized Action !");
-
+    }
     const { id } = req.params;
 
     const result = await singleGetService(id);
@@ -84,11 +85,11 @@ export const getSingleService = catchAsync(
 // update
 export const updateService = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "content-management" ||
+    req.user!.service !== "content-management" &&
     req.user!.service !== "super-management"
-  )
+  ) {
     throw new APIError(401, "UnAuthorized Action !");
-
+  }
   const { id } = req.params;
   const updatedData = req.body;
 
@@ -104,10 +105,11 @@ export const updateService = catchAsync(async (req: Request, res: Response) => {
 // delete
 export const deleteService = catchAsync(async (req: Request, res: Response) => {
   if (
-    req.user!.service !== "content-management" ||
+    req.user!.service !== "content-management" &&
     req.user!.service !== "super-management"
-  )
+  ) {
     throw new APIError(401, "UnAuthorized Action !");
+  }
 
   const { id } = req.params;
 

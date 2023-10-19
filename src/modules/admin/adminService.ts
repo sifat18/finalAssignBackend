@@ -44,7 +44,6 @@ export const updateAdminService = async (
   payload: Partial<IAdmin>
 ): Promise<IAdmin | null> => {
   const isExist = await Admin.findOne({ _id: new mongoose.Types.ObjectId(id) });
-
   if (!isExist) {
     throw new APIError(404, "Admin not found !");
   }
