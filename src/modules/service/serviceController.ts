@@ -39,14 +39,6 @@ export const createService: RequestHandler = catchAsync(
 // all user
 export const getAllService: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    if (
-      req.user!.service !== "content-management" &&
-      req.user!.service !== "super-management" &&
-      req.user!.role !== "client"
-    ) {
-      throw new APIError(401, "UnAuthorized Action !");
-    }
-
     const filters = pick(req.query, serviceFilterableFields);
     const paginationOptions = pick(req.query, paginationFields);
 
