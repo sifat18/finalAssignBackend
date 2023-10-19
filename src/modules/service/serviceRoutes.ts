@@ -19,11 +19,7 @@ router.post(
   validateRequest(ServiceValidation.createServiceZodSchema),
   createService
 );
-router.get(
-  "/services",
-  auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
-  getAllService
-);
+router.get("/services", getAllService);
 router.get(
   "/services/:id",
   auth("client", Admin_ROLE.ADMIN, Admin_ROLE.SUPER_ADMIN),
