@@ -11,12 +11,12 @@ export const pick = <T extends Record<string, unknown>, k extends keyof T>(
   return finalObject;
 };
 export const paginationFields = ["page", "limit", "sortBy", "sortOrder"];
-export const userFilterableFields = ["searchTerm", "email", "phoneNumber"];
+export const userFilterableFields = ["searchTerm", "email"];
 export const serviceFilterableFields = [
   "searchTerm",
   "name",
   "minPrice",
   "maxPrice",
 ];
-export const userSearchableFields = ["email", "phoneNumber"];
+export const userSearchableFields = ["email"];
 export const serviceSearchableFields = ["name"];
