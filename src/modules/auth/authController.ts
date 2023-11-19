@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { createUserService } from "./authService";
+import { createUserService, loginUserService } from "./authService";
 import catchAsync from "../../shared/catchAsync";
 import { reponseAuthFormat, reponseFormat } from "../../shared/responseFormat";
 import {
@@ -22,6 +22,27 @@ export const createUser: RequestHandler = catchAsync(
       statusCode: 200,
       message: "User created successfully !",
       data: dataWithoutPass,
+    });
+  }
+);
+export const loginUser: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { ...userData } = req.body;
+    const result = await loginUserService(userData);
+    const { refreshToken, ...others } = result;
+    // set refresh token into cookie
+
+    const cookieOptions = {
+      secure: true,
+      httpOnly: true,
+    };
+
+    res.cookie("refreshToken", refreshToken, cookieOptions);
+    reponseFormat<ILoginUserResponse>(res, {
+      success: true,
+      statusCode: 200,
+      message: "User logged in successfully !",
+      data: others,
     });
   }
 );

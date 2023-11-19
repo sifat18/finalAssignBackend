@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser } from "./authController";
+import { createUser, loginUser } from "./authController";
 import validateRequest from "../../middlewears/validateRequest";
 import { UserValidation } from "./user.validation";
 import { AuthValidation } from "./auth.validation";
@@ -11,11 +11,11 @@ router.post(
   validateRequest(UserValidation.createUserZodSchema),
   createUser
 );
-// router.post(
-//   "/auth/signin",
-//   validateRequest(AuthValidation.loginZodSchema),
-//   loginUser
-// );
+router.post(
+  "/auth/login",
+  validateRequest(AuthValidation.loginZodSchema),
+  loginUser
+);
 // router.post(
 //   "/auth/refresh-token",
 //   validateRequest(AuthValidation.refreshTokenZodSchema),
