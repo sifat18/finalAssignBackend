@@ -85,3 +85,40 @@ export const loginUserService = async (
     refreshToken,
   };
 };
+
+// getrefresh
+export const getRefreshTokenService = async (
+  token: string
+): Promise<IRefreshTokenResponse> => {
+  let verifiedToken = null;
+  try {
+    verifiedToken = verifyToken(token, config.jwt.refresh_secret as Secret);
+  } catch (err) {
+    throw new APIError(403, "Invalid Refresh Token");
+  }
+
+  const { email } = verifiedToken;
+
+  // checking deleted user's refresh token
+
+  const isUserExist = await getByEmailFromDB(email);
+  if (!isUserExist) {
+    throw new APIError(404, "User does not exist");
+  }
+  //generate new token
+
+  const newAccessToken = createToken(
+    {
+      _id: (isUserExist as any).id,
+      role: isUserExist.role,
+      email: isUserExist.email,
+      service: isUserExist.service,
+    },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
+
+  return {
+    accessToken: newAccessToken,
+  };
+};
