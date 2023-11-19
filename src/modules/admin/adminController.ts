@@ -1,5 +1,4 @@
 import { Request, RequestHandler, Response } from "express";
-import { IAdmin } from "./adminInterafce";
 import {
   createAdminService,
   // deleteAdminService,
