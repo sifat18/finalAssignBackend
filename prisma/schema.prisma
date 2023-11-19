@@ -11,17 +11,31 @@ datasource db {
 }
 
 model User {
-  id          String        @id @default(uuid())
+  id          String       @id @default(uuid())
   firstName   String
   lastName    String
-  role        Roles?        @default(client)
+  role        Roles        @default(client)
   address     String?
-  email       String        @unique
+  email       String       @unique
   password    String
-  service     User_Service? @default(normal_user)
-  phoneNumber Int           @unique
+  service     User_Service @default(normal_user)
+  phoneNumber Int          @unique
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Admin      Admin?
 
   @@map("users")
+}
+
+model Admin {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("admins")
 }
 
 enum Roles {

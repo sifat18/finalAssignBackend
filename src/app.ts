@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./middlewears/globalErrorHandler";
 import { authRoutes } from "./modules/auth/authRoutes";
+import { adminRoutes } from "./modules/admin/adminRoutes";
 // import { UserRoutes } from "./modules/users/userRoutes";
 // import { CategoryRoutes } from "./modules/category/categoryRoutes";
 // import { BookRoutes } from "./modules/books/bookRoutes";
@@ -15,6 +16,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", authRoutes);
+app.use("/api/v1", adminRoutes);
+
 // app.use("/api/v1", UserRoutes);
 // app.use("/api/v1", CategoryRoutes);
 // app.use("/api/v1", BookRoutes);
