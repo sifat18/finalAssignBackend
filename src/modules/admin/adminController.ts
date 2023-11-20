@@ -2,13 +2,13 @@ import { Request, RequestHandler, Response } from "express";
 import {
   createAdminService,
   // deleteAdminService,
-  // getAllAdminService,
+  getAllAdminService,
   // getSingleAdminService,
   // updateAdminService,
 } from "./adminService";
 import catchAsync from "../../shared/catchAsync";
 import { reponseFormat } from "../../shared/responseFormat";
-import { Admin } from "@prisma/client";
+import { Admin, User } from "@prisma/client";
 export const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...adminData } = req.body;
@@ -21,19 +21,19 @@ export const createAdmin: RequestHandler = catchAsync(
     });
   }
 );
-// // all user
-// export const getAllAdmin: RequestHandler = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const result = await getAllAdminService();
+// all user
+export const getAllAdmin: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getAllAdminService();
 
-//     reponseFormat<IAdmin[]>(res, {
-//       statusCode: 200,
-//       success: true,
-//       message: "Admin retrieved successfully",
-//       data: result,
-//     });
-//   }
-// );
+    reponseFormat<Admin[]>(res, {
+      statusCode: 200,
+      success: true,
+      message: "Admin retrieved successfully",
+      data: result,
+    });
+  }
+);
 // // single user
 // export const getSingleAdmin = catchAsync(
 //   async (req: Request, res: Response) => {

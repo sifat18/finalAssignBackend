@@ -31,12 +31,16 @@ export const createAdminService = async (user: User): Promise<Admin> => {
 
   return createdAdmin;
 };
-// // getting all
-// export const getAllAdminService = async (): Promise<Promise<IAdmin[] | []>> => {
-//   const result = await Admin.find({});
+// getting all
+export const getAllAdminService = async (): Promise<Promise<Admin[] | []>> => {
+  const result = await prisma.admin.findMany({
+    include: {
+      user: true,
+    },
+  });
 
-//   return result;
-// };
+  return result;
+};
 // // single
 // export const getSingleAdminService = async (
 //   id: string

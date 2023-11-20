@@ -1,7 +1,7 @@
 import express from "express";
 import {
   createAdmin,
-  // getAllAdmin,
+  getAllAdmin,
   // getSingleAdmin,
   // updateAdmin,
   // deleteAdmin,
@@ -19,7 +19,7 @@ router.post(
   auth(Admin_ROLE.SUPER_ADMIN),
   createAdmin
 );
-// router.get("/admins", auth(Admin_ROLE.SUPER_ADMIN), getAllAdmin);
+router.get("/admins", getAllAdmin);
 // router.get("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), getSingleAdmin);
 // router.patch("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), updateAdmin);
 
