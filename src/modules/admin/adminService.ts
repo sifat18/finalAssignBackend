@@ -3,6 +3,7 @@ import config from "../../config";
 import bcrypt from "bcrypt";
 import APIError from "../../errorHelpers/APIError";
 import prisma from "../../shared/prisma";
+import { updateUserService } from "../user/userService";
 
 // creating user
 export const createAdminService = async (user: User): Promise<Admin> => {
@@ -41,59 +42,45 @@ export const getAllAdminService = async (): Promise<Promise<Admin[] | []>> => {
 
   return result;
 };
-// // single
-// export const getSingleAdminService = async (
-//   id: string
-// ): Promise<IAdmin | null> => {
-//   const result = await Admin.findOne(
-//     { _id: new mongoose.Types.ObjectId(id) },
-//     { password: 0 }
-//   );
-//   return result;
-// };
-// // update
-// export const updateAdminService = async (
-//   id: string,
-//   payload: Partial<IAdmin>
-// ): Promise<IAdmin | null> => {
-//   const isExist = await Admin.findOne({ _id: new mongoose.Types.ObjectId(id) });
-//   if (!isExist) {
-//     throw new APIError(404, "Admin not found !");
-//   }
+// single
+export const getSingleAdminService = async (
+  id: string
+): Promise<Admin | null> => {
+  const result = await prisma.admin.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      user: true,
+    },
+  });
+  return result;
+};
+// update
+export const updateAdminService = async (
+  id: string,
+  payload: Partial<User>
+): Promise<Admin | null> => {
+  const isExist = await getSingleAdminService(id);
+  if (!isExist) {
+    throw new APIError(404, "Admin not found !");
+  }
+  const { userId } = isExist;
+  const result = await updateUserService(userId, payload);
+  if (result?.id) {
+    const isExist = await getSingleAdminService(id);
 
-//   const { name, password, ...userData } = payload;
-//   let hashPas;
-//   if (password) {
-//     hashPas = await bcrypt.hash(password, Number(config.bycrypt_salt_rounds));
-//   }
-//   const updatedUserData: Partial<IAdmin> = { ...userData };
-//   if (hashPas) {
-//     updatedUserData["password"] = hashPas;
-//   }
-//   // dynamically handling
+    return isExist;
+  }
+  return null;
+};
+// delete
+export const deleteAdminService = async (id: string): Promise<Admin | null> => {
+  const result = await prisma.admin.delete({
+    where: {
+      id: id,
+    },
+  });
 
-//   if (name && Object.keys(name).length > 0) {
-//     Object.keys(name).forEach((key) => {
-//       const nameKey = `name.${key}` as keyof Partial<IAdmin>;
-//       (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
-//     });
-//   }
-
-//   const result = await Admin.findOneAndUpdate(
-//     { _id: new mongoose.Types.ObjectId(id) },
-//     updatedUserData,
-//     {
-//       new: true,
-//     }
-//   );
-//   return result;
-// };
-// // delete
-// export const deleteAdminService = async (
-//   id: string
-// ): Promise<IAdmin | null> => {
-//   const result = await Admin.findByIdAndDelete({
-//     _id: new mongoose.Types.ObjectId(id),
-//   });
-//   return result;
-// };
+  return result;
+};

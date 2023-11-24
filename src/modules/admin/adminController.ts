@@ -1,14 +1,14 @@
 import { Request, RequestHandler, Response } from "express";
 import {
   createAdminService,
-  // deleteAdminService,
+  deleteAdminService,
   getAllAdminService,
-  // getSingleAdminService,
-  // updateAdminService,
+  getSingleAdminService,
+  updateAdminService,
 } from "./adminService";
 import catchAsync from "../../shared/catchAsync";
 import { reponseFormat } from "../../shared/responseFormat";
-import { Admin, User } from "@prisma/client";
+import { Admin } from "@prisma/client";
 export const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...adminData } = req.body;
@@ -34,45 +34,45 @@ export const getAllAdmin: RequestHandler = catchAsync(
     });
   }
 );
-// // single user
-// export const getSingleAdmin = catchAsync(
-//   async (req: Request, res: Response) => {
-//     const { id } = req.params;
+// single user
+export const getSingleAdmin = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-//     const result = await getSingleAdminService(id);
+    const result = await getSingleAdminService(id);
 
-//     reponseFormat<IAdmin>(res, {
-//       statusCode: 200,
-//       success: true,
-//       message: "Admin retrieved successfully",
-//       data: result,
-//     });
-//   }
-// );
-// // update
-// export const updateAdmin = catchAsync(async (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const updatedData = req.body;
+    reponseFormat<Admin>(res, {
+      statusCode: 200,
+      success: true,
+      message: "Admin retrieved successfully",
+      data: result,
+    });
+  }
+);
+// update
+export const updateAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
 
-//   const result = await updateAdminService(id, updatedData);
+  const result = await updateAdminService(id, updatedData);
 
-//   reponseFormat<IAdmin>(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: "Admin updated successfully",
-//     data: result,
-//   });
-// });
-// // delete
-// export const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
-//   const { id } = req.params;
+  reponseFormat<Admin>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Admin updated successfully",
+    data: result,
+  });
+});
+// delete
+export const deleteAdmin = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-//   const result = await deleteAdminService(id);
+  const result = await deleteAdminService(id);
 
-//   reponseFormat<IAdmin>(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: "Admin deleted successfully",
-//     data: result,
-//   });
-// });
+  reponseFormat<Admin>(res, {
+    statusCode: 200,
+    success: true,
+    message: "Admin deleted successfully",
+    data: result,
+  });
+});

@@ -2,9 +2,9 @@ import express from "express";
 import {
   createAdmin,
   getAllAdmin,
-  // getSingleAdmin,
-  // updateAdmin,
-  // deleteAdmin,
+  getSingleAdmin,
+  updateAdmin,
+  deleteAdmin,
 } from "./adminController";
 import validateRequest from "../../middlewears/validateRequest";
 import { AdminValidation } from "./adminValidation";
@@ -19,9 +19,9 @@ router.post(
   auth(Admin_ROLE.SUPER_ADMIN),
   createAdmin
 );
-router.get("/admins", getAllAdmin);
-// router.get("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), getSingleAdmin);
-// router.patch("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), updateAdmin);
+router.get("/admins", auth(Admin_ROLE.SUPER_ADMIN), getAllAdmin);
+router.get("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), getSingleAdmin);
+router.patch("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), updateAdmin);
 
-// router.delete("/admin/:id", auth(Admin_ROLE.SUPER_ADMIN), deleteAdmin);
+router.delete("/admin/:id", deleteAdmin);
 export const adminRoutes = router;
